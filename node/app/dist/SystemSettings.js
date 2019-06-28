@@ -1,0 +1,66 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Settings;
+(function (Settings) {
+    Settings["filesplitter"] = "_!_";
+    Settings["systemseperator"] = "/";
+    Settings["destinationFolder"] = "data/upload";
+    Settings["Host"] = "localhost";
+    Settings[Settings["Port"] = 3000] = "Port";
+    Settings["OriginHost"] = "localhost";
+    Settings[Settings["OriginPort"] = 4200] = "OriginPort";
+    Settings["CoeProtocol"] = "http://";
+    Settings["CoePort"] = ":8082";
+})(Settings = exports.Settings || (exports.Settings = {}));
+var Routes;
+(function (Routes) {
+    Routes["UploadProject"] = "/upload/project";
+    Routes["UploadFile"] = "/upload/file";
+    Routes["UpdateFile"] = "/update/file";
+    Routes["DeleteFile"] = "/delete/file";
+    Routes["RenameFile"] = "/rename/file";
+    Routes["RenameProject"] = "/rename/project";
+    Routes["DeleteProject"] = "/delete/project";
+    Routes["CreateProject"] = "/create/project";
+    Routes["GetListOfProjects"] = "/list/projects";
+    Routes["GetListOfProjectFiles"] = "/list/project";
+    Routes["StartCoe"] = "/coe/start";
+    Routes["InitCoSimulation"] = "/coe/init";
+    Routes["RunCoSimulation"] = "/coe/run";
+    Routes["StatusSimulation"] = "/coe/status";
+    Routes["StopCoSimulation"] = "/coe/stop";
+    Routes["GetCoSimulationStatus"] = "/coe/active";
+    Routes["GetActiveCoSimulationStatus"] = "/coe/log";
+    Routes["CreateMMFromSysML"] = "/mm/create";
+    Routes["GetMMDescription"] = "/mm/get";
+    Routes["CreateCoSimFromMM"] = "/cosim/create";
+    Routes["GetCoSimDescription"] = "/cosim/get";
+    Routes["GetFMUDescriptions"] = "/fmus/get";
+    Routes["UserLogin"] = "/login";
+    Routes["UserSignup"] = "/signup";
+    Routes["UserSignout"] = "/signout";
+    Routes["UserPassReset"] = "/passwordReset";
+    Routes["GitPull"] = "/git/pull";
+    Routes["GitPush"] = "/git/push";
+    Routes["GitBranch"] = "/git/branch";
+    Routes["GetProjectSettings"] = "/project/settings";
+    Routes["GetDownloadManager"] = "/downloadmanager";
+    Routes["GetListOfExapleProjects"] = "/exampleprojects/list";
+    Routes["GetExampleProejct"] = "/exampleprojects/get";
+    Routes["ExportSourceCodeFMU"] = "/export/fmu/sourcecode";
+    Routes["ExportToolWrapperFMU"] = "/export/fmu/toolwrapper";
+    Routes["GetTraceDaemonLog"] = "/tracedaemon/log";
+    Routes["GetDSEDescription"] = "/dse/get";
+    Routes["CreateDSE"] = "/dse/create";
+})(Routes = exports.Routes || (exports.Routes = {}));
+class ReturnCodes {
+}
+ReturnCodes.Unauthorized = () => { return { code: 401, message: { "Error ": 'Unauthorized' } }; };
+ReturnCodes.ForbiddenTask = () => { return { code: 403, message: { "Error ": 'Forbidden' } }; };
+ReturnCodes.MMWithoutFMU = () => { return { code: 400, message: { "Error ": 'FMU is missing from selected MM' } }; };
+ReturnCodes.ProjectNotFound = () => { return { code: 404, message: { "Error ": 'Selected project is not found' } }; };
+ReturnCodes.FileNotFound = () => { return { code: 404, message: { "Error ": 'Selected file is not found' } }; };
+ReturnCodes.PayloadTooLarge = () => { return { code: 413, message: { "Error ": ' Payload Too Large' } }; };
+ReturnCodes.TooManyRequests = () => { return { code: 429, message: { "Error ": ' Too Many Requests' } }; };
+exports.ReturnCodes = ReturnCodes;
+//# sourceMappingURL=SystemSettings.js.map

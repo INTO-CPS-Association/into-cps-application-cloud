@@ -1,0 +1,38 @@
+.login{
+  display: none;
+  vertical-align: center;
+  border: 1px solid !important;;
+  border-color: #fff !important;
+
+}
+#emailHelp{
+  color:white !important;
+}
+
+.floatright{
+  float: right;
+}
+form{
+  line-height: 12px;
+  width: 300px;
+  background-color: #0093dd;
+  font-size: 8pt;
+  font-family: tahoma;
+  margin-top: 1px;
+  margin-right: 2px;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: 1200;
+}
+button{
+  background-color: #0093dd;
+  border: 0px;
+  width: 100%;
+}
+button:hover{
+  background-color: #fff;
+  border: 0px;
+  color: #0093dd;
+  width: 100%;
+}

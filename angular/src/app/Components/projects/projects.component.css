@@ -1,0 +1,20 @@
+
+.dropzone{
+  width: 97%;
+  height: 400px;
+  background-color: #336699;
+  border-radius: 10px;
+  margin: 20px !important;
+}
+.opa{
+  opacity: 0;
+}
+
+.dropzone_text{
+  position: absolute;
+  left: 55%;
+  margin-top: -230px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}

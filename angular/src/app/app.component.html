@@ -1,0 +1,61 @@
+<div class="wrapper">
+  <!-- Sidebar -->
+
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <i><img src="./assets/icons/into-cps-logo.svg" width="50px" class="title"></i>
+      <h3 class="title" style="padding-bottom: 5px">{{title}}</h3>
+    </div>
+    <app-user  (someEvent)="loggedin($event)"></app-user>
+    <div class="projectpanel" *ngIf="userComponent.loggedIn">
+      <form class="login">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Select project</label>
+          <a class="btn btn-primary a_button floatright">Delete</a>
+          <a class="btn btn-primary a_button floatright" (click)="changeview('newproject')">Add</a>
+          <a class="btn btn-primary a_button floatright">Edit</a>
+          <select (change)="selectProject($event)" class="form-control" id="exampleFormControlSelect1">
+            <option *ngFor="let project of projects" >{{project}}</option>
+          </select>
+          <a class="btn btn-primary a_button floatright" (click)="loadProject()">Load</a>
+          <a class="btn btn-primary a_button floatright">Save</a>
+          <a class="btn btn-primary a_button floatright">Settings</a>
+          <a class="btn btn-primary a_button floatright">Download</a>
+        </div>
+      </form>
+    </div>
+    <app-multi-model-context-menu id="app-multi-model-context-menu"></app-multi-model-context-menu>
+    <ul id="NavMenu" class="list-unstyled components">
+    <!--
+      REF: https://bootstrapious.com/p/bootstrap-sidebar
+    -->
+    </ul>
+    <form class="login" style="
+  background-color: #0093dd; margin-top: -20px;">
+      <div class="form-group">
+        <a class="btn btn-primary a_button buttonfill">Download Manager</a>
+        <a class="btn btn-primary a_button buttonfill">Fmumap Builder</a>
+        <a class="btn btn-primary a_button buttonfill" *ngIf="userComponent.loggedIn" (click)="logout()">Logout</a>
+      </div>
+    </form>
+  </nav>
+  <!-- Page Content -->
+  <div id="content" style="overflow: hidden">
+        <!-- Burger Menu Start -->
+        <button type="button" id="sidebarCollapse" (click)="_toggleSidebar()">
+          <div style="width: 35px; height: 5px; background-color: #fff; margin: 6px 0;"></div>
+          <div style="width: 35px; height: 5px; background-color: #fff; margin: 6px 0;"></div>
+          <div style="width: 35px; height: 5px; background-color: #fff; margin: 6px 0;"></div>
+        </button>
+    <!-- Burger Menu End -->
+    <!-- content Start -->
+    <app-readme *ngIf="view === 'readme'" [path]="path"></app-readme>
+    <app-multi-model *ngIf="view === 'mm.json'" [path]="path"></app-multi-model>
+    <app-co-sim-configuration *ngIf="view === 'coe.json'" [path]="path"></app-co-sim-configuration>
+    <app-design-space-exploration *ngIf="view === 'dse.json'" [path]="path"></app-design-space-exploration>
+    <app-projects *ngIf="view === 'newproject'" (uploaded)="uploadedProject($event)" [username]="username" [selectedProject]="selectedProject"></app-projects>
+      <app-log></app-log>
+    <!--  content End  -->
+  </div>
+</div>
+<router-outlet></router-outlet>

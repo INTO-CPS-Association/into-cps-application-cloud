@@ -1,0 +1,44 @@
+version: '3.2'
+
+services:
+  coe:
+    build: coe
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+    networks:
+        testing_net:
+
+  angular:
+    build: angular
+    networks:
+        testing_net:
+            ipv4_address: 172.28.1.3
+
+  node:
+    build: node
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+    privileged: true
+    networks:
+        testing_net:
+            ipv4_address: 172.28.1.2
+
+  proxy:
+    build: proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+        testing_net:
+            ipv4_address: 172.28.1.1
+
+networks:
+    testing_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/16

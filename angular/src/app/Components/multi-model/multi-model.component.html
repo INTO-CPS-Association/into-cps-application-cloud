@@ -1,0 +1,173 @@
+<div class="title">
+  <h2> {{path}}</h2>
+</div>
+<div class="content">
+  <a class="form-control a_button" (click)="saveOrEdit()">{{editTitle}}</a>
+  <br>
+
+  <div style="text-align: center; border-bottom: 3px solid #aeaeae; padding-bottom: 10px">
+    <form style="margin: 0 auto; align-content: center">
+      <h3 style="display:inline-block">FMUs:</h3>
+      <a (click)="mm.addFmuMapsFromString('', null)" *ngIf="!disable" class="form-control a_button"
+         style="display:inline-block; margin-left:20px;">+</a>
+
+      <div *ngFor="let fmuMap of mm.getFmuMaps()">
+        <div style="width: 100%; clear: both; display: table">
+
+          <input NoSpecial style="margin: 0 auto; display: table-row; vertical-align: top; min-width: 300px; width: 40%"
+                 (input)="fmuMap.name = '{'+$event.target.value+'}'" [disabled]="disable" class="form-control"
+                 value="{{fmuMap.name.replace('{','').replace('}','')}}">
+          <a (click)="mm.removeFmuMapStr(fmuMap.name); selectedFmu = '';"
+             style="margin: 0 auto; margin-right: 10px; vertical-align: top; display: inline-block; width: 38px"
+             *ngIf="!disable" class="MMInputButtonEnd">X</a>
+
+          <select
+            style="margin: 0 auto; vertical-align: top; display: table-row; min-width: 300px; width: 40%; border: 1px solid #aeaeae"
+             class="minimal" [disabled]="disable"
+            [value]="getFmu(fmuMap)"
+            (change)="mm.setFmuForMapStrUsingFmuFilename(fmuMap.name, $event.target.value);">
+            <option></option>
+            <option *ngFor="let fmu of fmus">{{fmu.file}}</option>
+          </select>
+
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+
+
+  <div style="text-align: center; border-bottom: 3px solid #aeaeae; padding-bottom: 10px">
+    <form>
+      <h3>Fmu Instances:</h3>
+      <div style="display: inline-block; width: 40%;">FMUs</div>
+
+      <div style="display: inline-block; width: 40%;">
+        Instances:
+        <a (click)="mm.addInstanceStr(selectedFmu)" *ngIf="!disable" class="form-control a_button"
+           style="display:inline-block; margin-left:20px;">+</a>
+      </div>
+      <br><br>
+
+      <div style="display: inline-block; width: 40%; vertical-align: top;">
+        <div *ngFor="let fmuMap of mm.getFmuMaps()">
+          <a [ngClass]="{'selectedButton': selectedFmu === fmuMap.name}" (click)="selectedFmu = fmuMap.name"
+             class="form-control a_select">{{fmuMap.name}}</a>
+        </div>
+      </div>
+
+      <div *ngIf="selectedFmu" style="display: inline-block; width: 50%; vertical-align: top;">
+        <div *ngFor="let instance of mm.getInstancesForFmuStr(selectedFmu)">
+          <div style="display: inline-block">
+          <span class="MMSpan">
+            <a class="MMPreInput">Name:</a>
+            <span class="MMInputSpan">
+              <input NoSpecial class="MMInput" (input)="instance.name = $event.target.value" [disabled]="disable"
+                     value="{{instance.name}}">
+            </span>
+            <a (click)="mm.removeInstanceStr(instance.toString()); selectedOutInstance=''" *ngIf="!disable" class="MMInputButtonEnd">X</a>
+          </span>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+    <div style="text-align: center; border-bottom: 3px solid #aeaeae; padding-bottom: 10px">
+      <form>
+        <h3>Fmu Connections:</h3>
+        <div style="display: inline-block; vertical-align: top;">
+          <p>select an output instance:</p>
+          <select [value]="this.mm.getInstances()[0]" class="minimal" (change)="selectedOutInstance = $event.target.value"
+                  style="border: 1px solid #aeaeae; vertical-align: top">
+            <option *ngFor="let outInstance of mm.getInstances()">{{outInstance.toString()}}</option>
+          </select>
+          <br>
+          <p>Instance outputs:</p><br>
+          <div *ngIf="selectedOutInstance"
+               style="display: inline-block; width: 25%; vertical-align: top; min-width: 200px; vertical-align: top">
+            <div *ngFor="let outVariablename of getOutputVariables()">
+              <div>
+                <a [ngClass]="{'selectedButton': selectedOutVariable == outVariablename.name}"
+                   (click)="selectedOutVariable = outVariablename.name"
+                   class="form-control a_select">{{outVariablename.name}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="selectedOutVariable" style="display: inline-block; vertical-align: top; margin-left: 50px">
+          <p>select an input instance:</p>
+          <select [value]="this.mm.getInstances()[0]" class="minimal" (change)="selectedInInstance = $event.target.value"
+                  style="border: 1px solid #aeaeae; vertical-align: top">
+            <option *ngFor="let inInstance of mm.getInstances()">{{inInstance.toString()}}</option>
+          </select>
+          <br>
+          <p>Instance inputs:</p><br>
+          <div *ngIf="selectedInInstance && selectedOutVariable && selectedOutInstance"
+               style="display: inline-block; width: auto; vertical-align: top; min-width: 200px; vertical-align: top">
+            <div *ngFor="let inVariable of getInputVariables()">
+              <div>
+                <a [ngClass]="{'selectedButton': selectedInVariable == inVariable.name}"
+                   (click)="selectedInVariable = inVariable.name"
+                   class="form-control a_select">
+                  <input (click)="SetInputVariableOnOutput(inVariable.name, $event)"
+                         [checked]="existsAsInputForOutput(inVariable.name)" [disabled]="disable"
+                         type="checkbox"> {{inVariable.name}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div style="text-align: center; border-bottom: 3px solid #aeaeae; padding-bottom: 10px">
+      <form>
+        <h3>Initial values of parameters:</h3>
+        <div style="display: inline-block; vertical-align: top;">
+          <p>select an instance:</p>
+          <select class="minimal" (change)="selectedParameterInstance = $event.target.value"
+                  style="border: 1px solid #aeaeae; vertical-align: top">
+            <option *ngFor="let outInstance of mm.getInstances()">{{outInstance.toString()}}</option>
+          </select>
+        </div>
+        <br><br>
+        <div style="clear: bottom; display: block">
+          <div *ngIf="selectedParameterInstance" style="display: inline-block; width: 100%;">
+            <div *ngFor="let instance of mm.getParameterForInstanceStr(selectedParameterInstance)">
+              <div style="display: inline-block">
+            <span class="MMSpan">
+              <a class="MMPreInput" style="display: block">({{instance.type}}): {{instance.name}} </a>
+                  <input *ngIf="instance.type !== 'Boolean'" (input)="instance.value = $event.target.value"
+                         NoSpecial placeholder="{{instance.type}}" [disabled]="disable" class="MMInput"
+                         style="display: block"
+                         value="{{instance.value}}">
+                  <select *ngIf="instance.type === 'Boolean'" [value]="instance.value" [disabled]="disable"
+                          style="display: block"
+                          class="minimal">
+                    <option (click)="instance.value = true">true</option>
+                    <option (click)="instance.value = false">false</option>
+                  </select>
+              <a (click)="removeparameter(instance.name)" *ngIf="!disable" class="MMInputButtonEnd">X</a>
+            </span>
+              </div>
+            </div>
+            <p>Select an parameter and add it to the parameters above</p>
+            <select [value]="selectedParameter" class="minimal" (change)="selectedParameter = $event.target.value"
+                    style="border: 1px solid #aeaeae; vertical-align: top">
+              <option *ngFor="let outInstance of mm.getFmuParametersAsScalarVaraibleMapStr(selectedParameterInstance)">{{outInstance.name}}</option>
+            </select>
+            <a (click)="addParameter(selectedParameter)" *ngIf="!disable" class="form-control a_button"
+               style="display:inline-block; margin-left:20px;">+</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+</div>
+<div style="height: 50px;"></div>

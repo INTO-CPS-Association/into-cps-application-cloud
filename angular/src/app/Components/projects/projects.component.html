@@ -1,0 +1,8 @@
+<div id="dropperzone" class="dropzone">
+<input  id="dropper" (drop)="onFileSelected($event)" class="btn btn-success dropzone opa" type="file" (change)="onFileSelected($event)" webkitDirectory>
+</div>
+<div class="dropzone_text"> {{filemessage}}</div>
+<button class="btn btn-success" (click)="onSendFile()"> Transfer file to server</button>
+<mat-progress-bar mode="determinate" value="{{uploadProgress}}" *ngIf="uploadProgress !== 0"></mat-progress-bar>
+<p *ngIf="uploadProgress === 100">Upload succesful</p>
+

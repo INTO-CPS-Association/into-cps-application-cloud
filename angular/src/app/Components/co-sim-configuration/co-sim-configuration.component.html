@@ -1,0 +1,299 @@
+<div class="title">
+  <h2> {{path}}</h2>
+</div>
+<div class="content">
+  <a class="form-control a_button" (click)="saveOrEdit()">{{editTitle}}</a>
+  <br>
+</div>
+
+<!-- CONFIGURATION -->
+<div class="content">
+  <div class="collapsable" data-toggle="collapse" href="#70291516059419">Configurations</div>
+  <div id="70291516059419" class="collapse collapseContent">{{collapse}}
+
+
+    <!-- BASIC CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059420">Basic Configuration</div>
+    <div id="70291516059420" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Start Time:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.startTime"
+                     (input)="coSimulationConfig.startTime = +$event.target.value">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">End Time:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.endTime"
+                     (input)="coSimulationConfig.endTime = +$event.target.value">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Algorithm:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <select class="minimal" [disabled]="disable">
+                  <option *ngFor="let algorithms of coSimulationConfig.getAlgorithms()">{{algorithms}}</option>
+                </select>
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Step size:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.algorithm.size"
+                     (input)="coSimulationConfig.algorithm.size = +$event.target.value">
+            </span>
+          </span>
+      </div>
+    </div>
+
+
+    <!-- Visibility CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059421">Visibility</div>
+    <div id="70291516059421" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Visible</a>
+        <input type="checkbox" [checked]="coSimulationConfig.visible">
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Logging on</a>
+        <input type="checkbox" [checked]="coSimulationConfig.loggingOn">
+      </div>
+
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Enable all log categories per instance</a>
+        <input type="checkbox" [checked]="coSimulationConfig.enableAllLogCategoriesPerInstance">
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Algorithm:</a>
+        <span class="MMSpan">
+              <span class="MMInputSpan">
+                <select class="minimal" [disabled]="disable">
+                    <option *ngFor="let loglevel of coSimulationConfig.getLogLevels()">{{loglevel}}</option>
+                  </select>
+              </span>
+            </span>
+      </div>
+    </div>
+
+
+    <!-- Stabilization CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059422">Stabilization</div>
+    <div id="70291516059422" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Stabilization (Successive substitution)</a>
+        <input type="checkbox" [checked]="coSimulationConfig.stabalizationEnabled">
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Global Absolute Tolerance:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.global_absolute_tolerance">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Global Relative Tolerance:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.global_relative_tolerance">
+            </span>
+          </span>
+      </div>
+
+    </div>
+
+
+    <!-- Live Plotting CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059423">Live Plotting</div>
+    <div id="70291516059423" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Graph sampling interval (0[s]=allways):</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.livestreamInterval">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Number of graph columns:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.liveGraphColumns">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Number of visible graph rows. The graphs will scale such that the<br> given number of rows
+          will be visible without scrolling:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput" [value]="coSimulationConfig.liveGraphVisibleRowCount">
+            </span>
+          </span>
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Number of visible graph rows. The graphs will scale such that the<br> given number of rows
+          will be visible without scrolling:</a>
+      </div>
+
+
+
+
+
+
+      <div class="MMDiv">
+        <div *ngFor="let instance of mm.getInstances()">
+          <p>{{instance.toString()}}</p>
+
+
+          <div class="collapsable" data-toggle="collapse" attr.href="#Inputs{{ removedots(instance.toString()) }}">Inputs</div>
+          <div attr.id="Inputs{{ removedots(instance.toString()) }}" class="collapse collapseContent">{{collapse}}
+            <div *ngFor="let fmu of getfmuInputs(instance.fmuMap.fmu.file)">
+              <input (click)="toggleElementOnGraph(instance, fmu.name)"
+                     [checked]="existInElementOnGraph(instance, fmu.name)" [disabled]="disable"
+                     type="checkbox"> {{fmu.name}}
+            </div>
+          </div>
+
+
+          <div class="collapsable" data-toggle="collapse" attr.href="#Outputs{{ removedots(instance.toString()) }}">Outputs</div>
+          <div attr.id="Outputs{{ removedots(instance.toString()) }}" class="collapse collapseContent">{{collapse}}
+            <div *ngFor="let fmu of getfmuOutputs(instance.fmuMap.fmu.file)">
+              <input (click)="toggleElementOnGraph(instance, fmu.name)"
+                     [checked]="existInElementOnGraph(instance, fmu.name)" [disabled]="disable"
+                     type="checkbox"> {{fmu.name}}
+            </div>
+          </div>
+
+
+          <div class="collapsable" data-toggle="collapse" attr.href="#Parameters{{ removedots(instance.toString()) }}">Parameters</div>
+          <div attr.id="Parameters{{ removedots(instance.toString()) }}" class="collapse collapseContent">{{collapse}}
+            <div *ngFor="let fmu of getfmuParameters(instance.fmuMap.fmu.file)">
+              <input (click)="toggleElementOnGraph(instance, fmu.name)"
+                     [checked]="existInElementOnGraph(instance, fmu.name)" [disabled]="disable"
+                     type="checkbox"> {{fmu.name}}
+            </div>
+          </div>
+
+
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+    <!-- Results Saving CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059424">Results Saving</div>
+    <div id="70291516059424" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Filter:</a>
+        <span class="MMSpan">
+            <span class="MMInputSpan">
+              <input class="MMInput">
+            </span>
+          </span>
+      </div>
+
+    </div>
+
+
+    <!-- Others CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059425">Others</div>
+    <div id="70291516059425" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Slowdown simulation to real-time</a>
+        <input type="checkbox" [checked]="coSimulationConfig.simulationProgramDelay">
+      </div>
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Use parallelization</a>
+        <input type="checkbox" [checked]="coSimulationConfig.parallelSimulation">
+      </div>
+
+    </div>
+
+
+    <!-- Post-Processing CONFIGURATION -->
+    <div class="collapsable" data-toggle="collapse" href="#70291516059426">Post-Processing</div>
+    <div id="70291516059426" class="collapse collapseContent">{{collapse}}
+
+      <div class="MMDiv">
+        <a class="MMPreInput">Algorithm:</a>
+        <span class="MMSpan">
+              <span class="MMInputSpan">
+                <select class="minimal" [disabled]="disable">
+                  <option></option>
+                  <!--<option *ngFor="let loglevel of coSimulationConfig.getLogLevels()">{{loglevel}}</option>-->
+                  </select>
+              </span>
+            </span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- SIMULATION -->
+  <div class="collapsable" data-toggle="collapse" href="#70291516059427">Simulation</div>
+  <div id="70291516059427" class="collapse collapseContent">{{collapse}}
+
+    <div class="content">
+      <a *ngIf="sessionGranted()"  class="form-control a_button" (click)="simulate()">Run Simulation</a>
+      <br>
+    </div>
+    <div class="content">
+      <a *ngIf="sessionID" class="form-control a_button" (click)="stopSimulation()">Stop Simulation</a>
+      <br>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" [style.width]="progrss + '%'">
+        <!--[style.width]="coeSimulation.progress + '%'" style="min-width: 2em">-->
+        {{progrss}}%
+      </div>
+    </div>
+    <app-line-chart [datasets]="data"
+                    style="page-break-inside:avoid !important; width: 100% !important;"></app-line-chart>
+
+
+  </div>
+
+</div>
+
+<div style="height: 50px;"></div>
+

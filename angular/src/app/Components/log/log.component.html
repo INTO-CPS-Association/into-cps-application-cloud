@@ -1,0 +1,18 @@
+
+<div class="footer">
+  <a class="btn" (click)="_setlog('Coe Console')">Coe Console</a>
+  <a class="btn" (click)="_setlog('Coe Log')">Coe Log</a>
+  <a class="btn" (click)="_setlog('Trace Daemon Log')">Trace Daemon Log</a>
+</div>
+<div       mwlResizable
+           [enableGhostResize]="true"
+           [resizeEdges]="{bottom: false, right: false, top: true, left: false}"
+           (resizeEnd)="onResizeEnd($event)"
+           [style.height]="logHeight + 'px'"
+           class="logs">
+
+  <div mwlResizable class="logbanner">{{selectedlog}}:</div>
+  <div class="loggingArea" *ngIf="selectedlog === 'Coe Console'"></div>
+  <div class="loggingArea" *ngIf="selectedlog === 'Coe Log'"></div>
+  <div class="loggingArea" *ngIf="selectedlog === 'Trace Daemon Log'"></div>
+</div>

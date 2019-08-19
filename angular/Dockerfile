@@ -18,10 +18,11 @@ RUN npm install
 RUN npm install -g @angular/cli@1.7.1 --unsafe
 
 # add app
+
 COPY . /usr/src/app
 
 # generate build
-#RUN npm run build --prod
+RUN npm run build --prod
 
 ##################
 ### production ###
@@ -32,8 +33,6 @@ FROM nginx:1.13.9-alpine
 
 # copy artifact build from the 'build environment'
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
-
-# expose port 80
 
 # run nginx
 CMD ["nginx", "-g", "daemon off;"]

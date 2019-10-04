@@ -134,7 +134,7 @@ export class CoSimConfigurationComponent implements OnInit {
         try {
           const json = JSON.parse(status);
           const arr = json.results.slice(arraylength);
-          arraylength = json.length;
+          arraylength = json.results.slice(0).length;
           const length = arr.length;
           for (let i = 0; i < arr.length; i++) {
             const obj = arr[i];

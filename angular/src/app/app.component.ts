@@ -3,7 +3,7 @@ import {SidePanelHandler} from './NavigationHandler/side-panel-handler';
 import {CommunicationComponent} from './Components/communication/communication.component';
 import {UserComponent} from './Components/user/user.component';
 import {MultiModelComponent} from './Components/multi-model/multi-model.component';
-import {CoSimConfigurationComponent} from './Components/co-sim-configuration/co-sim-configuration.component';
+// import {CoSimConfigurationComponent} from './Components/co-sim-configuration/co-sim-configuration.component';
 import {MultiModel} from './variables/MultiModel';
 
 @Component({
@@ -12,21 +12,21 @@ import {MultiModel} from './variables/MultiModel';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  @ViewChild(UserComponent) userComponent;
+  @ViewChild(UserComponent, { static: true }) userComponent;
   multiModelComponentLoaded: MultiModelComponent;
-  @ViewChild(MultiModelComponent) set multiModelComponent(content: MultiModelComponent) {
+  @ViewChild(MultiModelComponent, { static: false }) set multiModelComponent(content: MultiModelComponent) {
     if (content !== undefined) {
       content.loadProject(this.communicationComponent, this.userComponent.username, this.selectedProject, this.elementID);
       this.multiModelComponentLoaded = content;
     }
   }
-  coSimConfigurationComponent: CoSimConfigurationComponent;
-  @ViewChild(CoSimConfigurationComponent) set CoSimConfigurationComponent(content: CoSimConfigurationComponent) {
-    if (content !== undefined) {
-      content.loadProject(this.communicationComponent, this.userComponent.username, this.selectedProject, this.elementID);
-      this.coSimConfigurationComponent = content;
-    }
-  }
+  // coSimConfigurationComponent: CoSimConfigurationComponent;
+  // @ViewChild(CoSimConfigurationComponent, { static: false }) set CoSimConfigurationComponent(content: CoSimConfigurationComponent) {
+  //   if (content !== undefined) {
+  //     content.loadProject(this.communicationComponent, this.userComponent.username, this.selectedProject, this.elementID);
+  //     this.coSimConfigurationComponent = content;
+  //   }
+  // }
   username: string;
   selectedProject: string;
   elementID: string;
@@ -110,9 +110,9 @@ export class AppComponent {
           this.view = 'coe.json';
           this.path = elementID;
           this.elementID = elementID;
-          if (this.coSimConfigurationComponent !== undefined) {
-            this.coSimConfigurationComponent.loadProject(this.communicationComponent, this.username, this.selectedProject, elementID);
-          }
+          // if (this.coSimConfigurationComponent !== undefined) {
+          //   this.coSimConfigurationComponent.loadProject(this.communicationComponent, this.username, this.selectedProject, elementID);
+          // }
         }
         // Change View depending on file click.
 

@@ -51,7 +51,7 @@
     <!-- content Start -->
     <app-readme *ngIf="view === 'readme'" [path]="path"></app-readme>
     <app-multi-model *ngIf="view === 'mm.json'" [path]="path"></app-multi-model>
-    <app-co-sim-configuration *ngIf="view === 'coe.json'" [path]="path"></app-co-sim-configuration>
+    <!-- <app-co-sim-configuration *ngIf="view === 'coe.json'" [path]="path"></app-co-sim-configuration> -->
     <app-design-space-exploration *ngIf="view === 'dse.json'" [path]="path"></app-design-space-exploration>
     <app-projects *ngIf="view === 'newproject'" (uploaded)="uploadedProject($event)" [username]="username" [selectedProject]="selectedProject"></app-projects>
       <app-log></app-log>
